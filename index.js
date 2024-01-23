@@ -143,17 +143,17 @@ function addRole() {
         depList = listRes;
         return inquirer.prompt(questions);
     }).then((data) => {
+        let newRole = data.newRole
         let salary = Math.round(data.salary);
         let selectedDep = data.roleDep;
         let depID;
         for (var i = 0; depList.length > i; i++) {
-            console.log(i)
             if (depList[i] === selectedDep) {
                 depID = i + 1;
                 break;
             }
         }
-        db.query('INSERT INTO role (title, salary, department_id) VALUES  (?, ?, ?);', [selectedDep, salary, depID], (err, result) => {
+        db.query('INSERT INTO role (title, salary, department_id) VALUES  (?, ?, ?);', [newRole, salary, depID], (err, result) => {
             if (err) {
                 console.log(`Error with inserting role: ${err}`);
                 startProg();
@@ -218,7 +218,7 @@ function addEmployee() {
         let selectedMang = data.empMan;
         let managerID;
         if (selectedMang == 'NULL') {
-            managerID = 'NULL'
+            managerID = null
         } else {
             for (var i = 0; employeeList.length > i; i++) {
                 if (employeeList[i] == selectedMang) {
